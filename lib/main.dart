@@ -15,8 +15,11 @@ void main() async {
       anonKey: dotenv.get('anon_key'), url: dotenv.get('project_url'));
 
   runApp(
-    const MyApp(),
-  );
+      //   MultiProvider(
+      //   providers: [],
+      //   child: const MyApp(),
+      // )
+      const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -25,6 +28,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData.from(
+          colorScheme: ColorScheme.fromSwatch(
+              backgroundColor: Color.fromARGB(255, 75, 174, 255))),
+      color: const Color.fromARGB(255, 75, 174, 255),
       home: SplashScr(),
     );
   }
@@ -55,7 +62,10 @@ class _SplashScrState extends State<SplashScr> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset('assets/logo.png'),
-          const CircularProgressIndicator()
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: const CircularProgressIndicator(),
+          )
         ],
       ),
     ));
