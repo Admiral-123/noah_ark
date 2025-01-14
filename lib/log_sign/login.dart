@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
+import 'package:noah_ark/backend_handling/supabase_handle.dart';
+import 'package:noah_ark/home.dart';
+import 'package:noah_ark/log_sign/sign_in.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -35,21 +39,22 @@ class _LoginPage extends State<Login> {
                   print("to be implemented");
                 })),
 
-            Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    print("to be implemented");
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  ),
-                  child: Text(
-                    "Login with Phone Number",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                )),
+            // Padding(
+            //     padding: EdgeInsets.all(8.0),
+            //     child: ElevatedButton(
+            //       onPressed: () {
+            //         print("to be implemented");
+            //       },
+            //       // style: ElevatedButton.styleFrom(
+            //       //   backgroundColor: Theme.of(context).primaryColor,
+            //       //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            //       // ),
+            //       child: Text(
+            //         "Login with Phone Number",
+            //         style: TextStyle(
+            //             fontSize: 16, color: Theme.of(context).primaryColor),
+            //       ),
+            //     )),
 
             // Padding(
             //   padding: const EdgeInsets.only(
@@ -107,6 +112,7 @@ class _LoginPage extends State<Login> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
+                      obscureText: true,
                       controller: passwordController,
                       decoration: InputDecoration(
                           label: Text("Password"),
@@ -120,8 +126,28 @@ class _LoginPage extends State<Login> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child:
-                        ElevatedButton(onPressed: () {}, child: Text("Login")),
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          try {
+                            await context.read<SupabaseHandle>().loginWithEmail(
+                                emailController.text.trim(),
+                                passwordController.text);
+
+                            Navigator.pushReplacement(
+                                // ignore: use_build_context_synchronously
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Home()));
+                          } catch (e) {
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(e.toString())));
+                          }
+                        },
+                        child: Text(
+                          "Login",
+                          style: TextStyle(fontSize: 16),
+                        )),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(2.0),
@@ -129,11 +155,16 @@ class _LoginPage extends State<Login> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "new to NoahArk",
+                          "new to NoahArk ?",
                           style: TextStyle(fontWeight: FontWeight.w500),
                         ),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignUp()));
+                            },
                             child: Text(
                               "Register",
                               style: TextStyle(fontWeight: FontWeight.bold),

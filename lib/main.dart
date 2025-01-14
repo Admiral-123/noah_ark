@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:noah_ark/backend_handling/supabase_handle.dart';
 import 'package:noah_ark/home.dart';
 import 'package:noah_ark/log_sign/login.dart';
-import 'package:noah_ark/supabase/auth_get.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -19,7 +19,10 @@ void main() async {
       //   providers: [],
       //   child: const MyApp(),
       // )
-      const MyApp());
+      MultiProvider(
+    providers: [ChangeNotifierProvider(create: (context) => SupabaseHandle())],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
