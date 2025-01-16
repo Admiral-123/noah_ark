@@ -34,10 +34,25 @@ class _LoginPage extends State<Login> {
             //     },
             //     child: Text("Email")),
             Padding(
-                padding: EdgeInsets.all(8.0),
-                child: SignInButton(Buttons.Google, onPressed: () {
-                  print("to be implemented");
-                })),
+                padding: EdgeInsets.all(2.0),
+                child: InkWell(
+                  splashColor: Colors.amber,
+                  highlightColor: Colors.amber,
+                  onTap: () {},
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black54, width: 2.0),
+                      borderRadius: BorderRadius.circular(
+                        4.5,
+                      ),
+                    ),
+                    child: Image.asset(
+                      'assets/discord.png',
+                      fit: BoxFit.scaleDown,
+                      scale: 1.3,
+                    ),
+                  ),
+                )),
 
             // Padding(
             //     padding: EdgeInsets.all(8.0),

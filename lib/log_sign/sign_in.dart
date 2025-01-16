@@ -4,7 +4,7 @@ import 'package:flutter_signin_button/button_view.dart';
 import 'package:noah_ark/backend_handling/supabase_handle.dart';
 import 'package:noah_ark/log_sign/email_verify.dart';
 import 'package:noah_ark/log_sign/login.dart';
-import 'package:noah_ark/my_widgets/my_txt_field.dart';
+// import 'package:noah_ark/my_widgets/my_txt_field.dart';
 import 'package:provider/provider.dart';
 
 class SignUp extends StatefulWidget {
@@ -48,11 +48,11 @@ class _SignInPage extends State<SignUp> {
               //           MaterialPageRoute(builder: (context) => SignInWitEmail()));
               //     },
               //     child: Text("Email")),
-              Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SignInButton(Buttons.Google, onPressed: () {
-                    print("to be implemented");
-                  })),
+              // Padding(
+              //     padding: const EdgeInsets.all(8.0),
+              //     child: SignInButton(Buttons., onPressed: () {
+              //       print("to be implemented");
+              //     })),
 
               // Padding(   // because of twillio free trial limitaion we're depreciating phone numbers
               //     padding: EdgeInsets.all(8.0),
@@ -127,6 +127,25 @@ class _SignInPage extends State<SignUp> {
               //     textAlign: TextAlign.left,
               //   ),
               // ),
+              Padding(
+                  padding: EdgeInsets.all(2.0),
+                  child: InkWell(
+                    splashColor: Colors.amber.shade300,
+                    onTap: () {},
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54, width: 2.0),
+                        borderRadius: BorderRadius.circular(
+                          4.5,
+                        ),
+                      ),
+                      child: Image.asset(
+                        'assets/discord.png',
+                        fit: BoxFit.scaleDown,
+                        scale: 1.3,
+                      ),
+                    ),
+                  )),
 
               Padding(
                 padding: EdgeInsets.all(2.0),
@@ -224,6 +243,7 @@ class _SignInPage extends State<SignUp> {
                                             password:
                                                 passwordController.text)));
                               } catch (e) {
+                                // ignore: use_build_context_synchronously
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(content: Text(e.toString())));
                                 return;

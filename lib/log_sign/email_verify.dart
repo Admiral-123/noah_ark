@@ -56,6 +56,7 @@ class _EmailVerifyPage extends State<EmailVerify> {
                           .read<SupabaseHandle>()
                           .loginWithEmail(widget.email, widget.password);
 
+                      // ignore: use_build_context_synchronously
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) => Home()));
                     } catch (e) {
