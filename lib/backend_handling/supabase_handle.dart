@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseHandle extends ChangeNotifier {
@@ -31,5 +33,17 @@ class SupabaseHandle extends ChangeNotifier {
     await Supabase.instance.client.auth
         .signInWithPassword(email: email, password: password);
     notifyListeners();
+  }
+
+  // Future<dynamic> signUpWithDiscord() async {
+  //   await Supabase.instance.client.auth.signUp();
+  // }
+
+  Future<dynamic> loginWithDiscord() async {
+    await Supabase.instance.client.auth.signInWithOAuth(OAuthProvider.discord,
+        redirectTo: 'noahark.scheme://noahark-host',
+        authScreenLaunchMode: kIsWeb
+            ? LaunchMode.platformDefault
+            : LaunchMode.externalApplication);
   }
 }

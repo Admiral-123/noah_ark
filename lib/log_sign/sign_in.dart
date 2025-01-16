@@ -130,8 +130,10 @@ class _SignInPage extends State<SignUp> {
               Padding(
                   padding: EdgeInsets.all(2.0),
                   child: InkWell(
-                    splashColor: Colors.amber.shade300,
-                    onTap: () {},
+                    splashColor: Colors.amber,
+                    onTap: () async {
+                      await context.read<SupabaseHandle>().loginWithDiscord();
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black54, width: 2.0),

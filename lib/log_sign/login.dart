@@ -38,7 +38,9 @@ class _LoginPage extends State<Login> {
                 child: InkWell(
                   splashColor: Colors.amber,
                   highlightColor: Colors.amber,
-                  onTap: () {},
+                  onTap: () async {
+                    await context.read<SupabaseHandle>().loginWithDiscord();
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black54, width: 2.0),
