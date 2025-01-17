@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -41,9 +43,21 @@ class SupabaseHandle extends ChangeNotifier {
 
   Future<dynamic> loginWithDiscord() async {
     await Supabase.instance.client.auth.signInWithOAuth(OAuthProvider.discord,
-        redirectTo: 'noahark.scheme://noahark-host',
         authScreenLaunchMode: kIsWeb
             ? LaunchMode.platformDefault
             : LaunchMode.externalApplication);
+  }
+
+  Future<dynamic> writeUserName(String username) async {
+    await Supabase.instance.client.auth
+        .updateUser(UserAttributes(data: {"display_name": username}));
+  }
+
+  Future<dynamic> updatePfp(File? img, String path, String bucket) async {
+    await Supabase.instance.client.storage.from(bucket).upload(path, img!);
+  }
+
+  Future<String> currentUser() async {
+    return Supabase.instance.client.auth.currentUser!.toString();
   }
 }

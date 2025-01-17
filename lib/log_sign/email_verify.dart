@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:noah_ark/backend_handling/supabase_handle.dart';
 import 'package:noah_ark/home.dart';
 import 'package:noah_ark/log_sign/login.dart';
+import 'package:noah_ark/log_sign/user_name_pfp.dart';
 import 'package:provider/provider.dart';
 
 class EmailVerify extends StatefulWidget {
@@ -57,8 +58,10 @@ class _EmailVerifyPage extends State<EmailVerify> {
                           .loginWithEmail(widget.email, widget.password);
 
                       // ignore: use_build_context_synchronously
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => Home()));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UserNamePfp()));
                     } catch (e) {
                       // ignore: use_build_context_synchronously
                       ScaffoldMessenger.of(context)
@@ -79,16 +82,17 @@ class _EmailVerifyPage extends State<EmailVerify> {
                         color: Colors.black45,
                       ),
                     ),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (context) => Login()));
-                        },
-                        child: Text(
-                          "Login",
-                          style: TextStyle(
-                              color: const Color.fromARGB(255, 75, 174, 255)),
-                        ))
+
+                    // TextButton(
+                    //     onPressed: () {
+                    //       Navigator.pushReplacement(context,
+                    //           MaterialPageRoute(builder: (context) => Login()));
+                    //     },
+                    //     child: Text(
+                    //       "Login",
+                    //       style: TextStyle(
+                    //           color: const Color.fromARGB(255, 75, 174, 255)),
+                    //     ))
                   ],
                 )),
           ],
