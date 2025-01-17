@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:noah_ark/backend_handling/supabase_handle.dart';
 import 'package:noah_ark/home.dart';
 import 'package:noah_ark/log_sign/sign_in.dart';
+import 'package:noah_ark/my_widgets/my_dialog.dart';
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
@@ -147,26 +148,9 @@ class _LoginPage extends State<Login> {
                             showDialog(
                               context: context,
                               builder: (context) {
-                                return Center(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.white30,
-                                        borderRadius:
-                                            BorderRadius.circular(12.0)),
-                                    child: Column(
-                                      children: [
-                                        const CircularProgressIndicator(),
-                                        Text(
-                                          "it'll take few seconds",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 18.0,
-                                              color: Colors.black87),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                );
+                                return MyDialog(
+                                    content: "it'll take few seconds",
+                                    isCircular: true);
                               },
                             );
                             await context.read<SupabaseHandle>().loginWithEmail(
@@ -180,8 +164,14 @@ class _LoginPage extends State<Login> {
                                     builder: (context) => Home()));
                           } catch (e) {
                             // ignore: use_build_context_synchronously
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(e.toString())));
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //     SnackBar(content: Text(e.toString())));
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return MyDialog(
+                                      content: e.toString(), isCircular: false);
+                                });
                           }
                         },
                         child: Text(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:noah_ark/backend_handling/supabase_handle.dart';
 import 'package:noah_ark/log_sign/email_verify.dart';
 import 'package:noah_ark/log_sign/login.dart';
+import 'package:noah_ark/my_widgets/my_dialog.dart';
 // import 'package:noah_ark/my_widgets/my_txt_field.dart';
 import 'package:provider/provider.dart';
 
@@ -230,20 +231,9 @@ class _SignInPage extends State<SignUp> {
                                 showDialog(
                                   context: context,
                                   builder: (context) {
-                                    return Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12.0)),
-                                      child: Column(
-                                        children: [
-                                          const CircularProgressIndicator(),
-                                          Text(
-                                            "it'll take few seconds",
-                                            textAlign: TextAlign.center,
-                                          )
-                                        ],
-                                      ),
-                                    );
+                                    return MyDialog(
+                                        content: "it'll take few seconds",
+                                        isCircular: true);
                                   },
                                 );
                                 await context
@@ -262,15 +252,18 @@ class _SignInPage extends State<SignUp> {
                                             password:
                                                 passwordController.text)));
                               } catch (e) {
-                                // ignore: use_build_context_synchronously
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(e.toString())));
-                                return;
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => MyDialog(
+                                        content: e.toString(),
+                                        isCircular: false));
                               }
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text("password doesnt match")));
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => MyDialog(
+                                      content: 'Password does not match',
+                                      isCircular: false));
                             }
                           },
                           child: Text(
