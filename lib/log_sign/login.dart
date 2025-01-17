@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/button_list.dart';
-import 'package:flutter_signin_button/button_view.dart';
 import 'package:noah_ark/backend_handling/supabase_handle.dart';
 import 'package:noah_ark/home.dart';
 import 'package:noah_ark/log_sign/sign_in.dart';
@@ -146,6 +144,31 @@ class _LoginPage extends State<Login> {
                     child: ElevatedButton(
                         onPressed: () async {
                           try {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Center(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white30,
+                                        borderRadius:
+                                            BorderRadius.circular(12.0)),
+                                    child: Column(
+                                      children: [
+                                        const CircularProgressIndicator(),
+                                        Text(
+                                          "it'll take few seconds",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 18.0,
+                                              color: Colors.black87),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
                             await context.read<SupabaseHandle>().loginWithEmail(
                                 emailController.text.trim(),
                                 passwordController.text);

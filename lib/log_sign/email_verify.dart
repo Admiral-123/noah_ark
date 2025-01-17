@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:noah_ark/backend_handling/supabase_handle.dart';
-import 'package:noah_ark/home.dart';
 import 'package:noah_ark/log_sign/login.dart';
 import 'package:noah_ark/log_sign/user_name_pfp.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +37,7 @@ class _EmailVerifyPage extends State<EmailVerify> {
                   style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w600,
-                      color: Theme.of(context).primaryColor)),
+                      color: Colors.black87)),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -71,7 +70,7 @@ class _EmailVerifyPage extends State<EmailVerify> {
                   child: Text("Proceed")),
             ),
             Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(1.0),
                 child: Column(
                   children: [
                     Text(
@@ -82,17 +81,14 @@ class _EmailVerifyPage extends State<EmailVerify> {
                         color: Colors.black45,
                       ),
                     ),
-
-                    // TextButton(
-                    //     onPressed: () {
-                    //       Navigator.pushReplacement(context,
-                    //           MaterialPageRoute(builder: (context) => Login()));
-                    //     },
-                    //     child: Text(
-                    //       "Login",
-                    //       style: TextStyle(
-                    //           color: const Color.fromARGB(255, 75, 174, 255)),
-                    //     ))
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Login()));
+                        },
+                        child: Text('Login'))
                   ],
                 )),
           ],

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/button_list.dart';
-import 'package:flutter_signin_button/button_view.dart';
 import 'package:noah_ark/backend_handling/supabase_handle.dart';
 import 'package:noah_ark/log_sign/email_verify.dart';
 import 'package:noah_ark/log_sign/login.dart';
@@ -229,6 +227,25 @@ class _SignInPage extends State<SignUp> {
                             if (passwordController.text ==
                                 confirmPasswordController.text) {
                               try {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0)),
+                                      child: Column(
+                                        children: [
+                                          const CircularProgressIndicator(),
+                                          Text(
+                                            "it'll take few seconds",
+                                            textAlign: TextAlign.center,
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
                                 await context
                                     .read<SupabaseHandle>()
                                     .createUseWithEmail(

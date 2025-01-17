@@ -54,10 +54,15 @@ class SupabaseHandle extends ChangeNotifier {
   }
 
   Future<dynamic> updatePfp(File? img, String path, String bucket) async {
-    await Supabase.instance.client.storage.from(bucket).upload(path, img!);
+    try {
+      await Supabase.instance.client.storage.from(bucket).upload(path, img!);
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
-  Future<String> currentUser() async {
-    return Supabase.instance.client.auth.currentUser!.toString();
+  Future<dynamic> currentUser() async {
+    var y = Supabase.instance.client.auth.currentUser!.id.toString();
+    return y;
   }
 }
