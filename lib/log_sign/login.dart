@@ -167,6 +167,7 @@ class _LoginPage extends State<Login> {
                             // ScaffoldMessenger.of(context).showSnackBar(
                             //     SnackBar(content: Text(e.toString())));
                             showDialog(
+                                // ignore: use_build_context_synchronously
                                 context: context,
                                 builder: (context) {
                                   return MyDialog(
