@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -64,5 +65,17 @@ class SupabaseHandle extends ChangeNotifier {
   Future<dynamic> currentUser() async {
     var y = Supabase.instance.client.auth.currentUser!.id.toString();
     return y;
+  }
+
+  Future<dynamic> post(String txt) async {
+    await Supabase.instance.client.from('post').insert({
+      // "created_at": DateTime.now(),
+      "created_by": await currentUser(),
+      "post_text": txt,
+      "post_image": null,
+      "post_upvotes": [],
+      "post_downvotes": [],
+      // "post_comments": [],
+    });
   }
 }

@@ -252,7 +252,10 @@ class _SignInPage extends State<SignUp> {
                                             password:
                                                 passwordController.text)));
                               } catch (e) {
+                                // ignore: use_build_context_synchronously
+                                Navigator.pop(context);
                                 showDialog(
+                                    // ignore: use_build_context_synchronously
                                     context: context,
                                     builder: (context) => MyDialog(
                                         content: e.toString(),

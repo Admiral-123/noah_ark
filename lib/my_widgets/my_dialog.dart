@@ -29,10 +29,16 @@ class _MyDialogState extends State<MyDialog> {
               widget.isCircular
                   ? const CircularProgressIndicator()
                   : Container(),
-              Text(
-                widget.content,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black87, fontSize: 14.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  widget.content,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w600),
+                ),
               ),
             ],
           ),
