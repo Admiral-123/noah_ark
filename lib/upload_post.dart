@@ -40,6 +40,14 @@ class _UploadPostPage extends State<UploadPost> {
                         .post(uploadController.text.trim());
                   },
                   child: Text('upload')),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                  onPressed: () {
+                    context.read<SupabaseHandle>().postComments();
+                  },
+                  child: Text('comment')),
             )
           ],
         ),

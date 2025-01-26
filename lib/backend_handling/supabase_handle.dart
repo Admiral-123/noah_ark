@@ -78,4 +78,13 @@ class SupabaseHandle extends ChangeNotifier {
       // "post_comments": [],
     });
   }
+
+  Future<dynamic> postComments() async {
+    await Supabase.instance.client.from('post_comments').insert({
+      "post_id": "ba11c340-8484-4933-9dea-bf3081cad298",
+      "user_id": await currentUser(),
+      "comments": 'wowo momo',
+      "likes": []
+    });
+  }
 }
