@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:noah_ark/backend_handling/supabase_handle.dart';
+import 'package:noah_ark/backend_handling_and_providers/supabase_handle.dart';
 import 'package:noah_ark/home.dart';
 import 'package:noah_ark/my_widgets/my_txt_field.dart';
 import 'package:provider/provider.dart';

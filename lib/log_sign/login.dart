@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:noah_ark/backend_handling/supabase_handle.dart';
+import 'package:noah_ark/backend_handling_and_providers/supabase_handle.dart';
 import 'package:noah_ark/home.dart';
 import 'package:noah_ark/log_sign/sign_in.dart';
 import 'package:noah_ark/my_widgets/my_dialog.dart';

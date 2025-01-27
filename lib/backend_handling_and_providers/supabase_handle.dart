@@ -67,7 +67,7 @@ class SupabaseHandle extends ChangeNotifier {
     return y;
   }
 
-  Future<dynamic> post(String txt) async {
+  Future<dynamic> postTxt(String txt) async {
     await Supabase.instance.client.from('post').insert({
       // "created_at": DateTime.now(),
       "created_by": await currentUser(),
@@ -79,12 +79,32 @@ class SupabaseHandle extends ChangeNotifier {
     });
   }
 
-  Future<dynamic> postComments() async {
+  Future<dynamic> postComments(String txt, String postId) async {
     await Supabase.instance.client.from('post_comments').insert({
-      "post_id": "ba11c340-8484-4933-9dea-bf3081cad298",
+      "post_id": postId,
       "user_id": await currentUser(),
-      "comments": 'wowo momo',
+      "comments": txt,
       "likes": []
     });
+  }
+
+  SupabaseStreamFilterBuilder postStream() {
+    return Supabase.instance.client.from('post').stream(primaryKey: ['id']);
+  }
+
+  String pfpUrlGiver(String userId) {
+    return Supabase.instance.client.storage
+        .from('pfp')
+        .getPublicUrl('pfpUpload/$userId');
+  }
+
+  Future<String> postUserName(String userId) async {
+    final userName = await Supabase.instance.client
+        .from('Users')
+        .select('display_name')
+        .eq('id', userId)
+        .single();
+
+    return userName['display_name'];
   }
 }

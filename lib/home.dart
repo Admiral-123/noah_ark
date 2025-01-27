@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:noah_ark/upload_post.dart';
+import 'package:noah_ark/feed_page.dart';
+import 'package:noah_ark/my_account.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -12,10 +13,8 @@ class _HomePage extends State<Home> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    const UploadPost(),
-    Center(
-        child: Text('Home Page',
-            style: TextStyle(fontSize: 24))), // Home page placeholder
+    const FeedPage(),
+    const MyAccount(),
   ];
 
   @override
@@ -31,12 +30,12 @@ class _HomePage extends State<Home> {
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.post_add),
-            label: 'Post',
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_box_rounded),
-            label: 'Home',
+            label: 'MyAccount',
           ),
         ],
       ),
