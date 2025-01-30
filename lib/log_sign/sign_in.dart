@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:noah_ark/backend_handling_and_providers/supabase_handle.dart';
+import 'package:noah_ark/log_sign/discord_login_waiting.dart';
 import 'package:noah_ark/log_sign/email_verify.dart';
 import 'package:noah_ark/log_sign/login.dart';
 import 'package:noah_ark/my_widgets/my_dialog.dart';
@@ -17,17 +18,6 @@ class _SignInPage extends State<SignUp> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-  // TextEditingController phoneController = TextEditingController();
-  // TextEditingController phonePasswordController = TextEditingController();
-  // TextEditingController phoneOTPController = TextEditingController();
-  // bool otpEnable = false;
-  //bool phoneEnable = true;
-  // void toggleEnablers() {
-  //   setState(() {
-  //     otpEnable = !otpEnable;
-  //     //phoneEnable = !phoneEnable;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -41,97 +31,18 @@ class _SignInPage extends State<SignUp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // ElevatedButton(
-              //     onPressed: () {
-              //       Navigator.push(context,
-              //           MaterialPageRoute(builder: (context) => SignInWitEmail()));
-              //     },
-              //     child: Text("Email")),
-              // Padding(
-              //     padding: const EdgeInsets.all(8.0),
-              //     child: SignInButton(Buttons., onPressed: () {
-              //       print("to be implemented");
-              //     })),
-
-              // Padding(   // because of twillio free trial limitaion we're depreciating phone numbers
-              //     padding: EdgeInsets.all(8.0),
-              //     child: ElevatedButton(
-              //       onPressed: () {
-              //         showModalBottomSheet(
-              //           elevation: 70.0,
-              //           context: context,
-              //           builder: (context) {
-              //             return Padding(
-              //               padding: const EdgeInsets.all(8.0),
-              //               child: Column(
-              //                 children: [
-              //                   MyTxtField(
-              //                     label: "phone number",
-              //                     controller: phoneController,
-              //                     obscure: false,
-              //                     enable: true,
-              //                   ),
-              //                   MyTxtField(
-              //                     label: "password",
-              //                     controller: phonePasswordController,
-              //                     obscure: false,
-              //                     enable: true,
-              //                   ),
-              //                   MyTxtField(
-              //                     label: "OTP",
-              //                     controller: phoneOTPController,
-              //                     obscure: true,
-              //                     enable: true,
-              //                   ),
-              //                   ElevatedButton(
-              //                       onPressed: () {
-              //                         context
-              //                             .read<SupabaseHandle>()
-              //                             .createUserWithPhone(
-              //                                 phoneController.text.trim(),
-              //                                 phonePasswordController.text);
-              //                       },
-              //                       child: Text("Send OTP")),
-              //                   ElevatedButton(
-              //                       onPressed: () {
-              //                         context
-              //                             .read<SupabaseHandle>()
-              //                             .verifyPhone(
-              //                                 phoneOTPController.text.trim(),
-              //                                 phoneController.text.trim());
-              //                       },
-              //                       child: Text("verify")),
-              //                 ],
-              //               ),
-              //             );
-              //           },
-              //         );
-              //       },
-              //       // style: ElevatedButton.styleFrom(
-              //       //   backgroundColor: Theme.of(context).primaryColor,
-              //       //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              //       // ),
-              //       child: Text(
-              //         "Register with Phone Number",
-              //         style: TextStyle(fontSize: 16),
-              //       ),
-              //     )),
-
-              // Padding(
-              //   padding: const EdgeInsets.only(
-              //     right: 325.0,
-              //   ),
-              //   child: Text(
-              //     "Email",
-              //     textAlign: TextAlign.left,
-              //   ),
-              // ),
               Padding(
                   padding: EdgeInsets.all(2.0),
                   child: InkWell(
                     splashColor: Colors.amber,
                     onTap: () async {
                       await context.read<SupabaseHandle>().loginWithDiscord();
+                      Navigator.pushReplacement(
+                          // ignore: use_build_context_synchronously
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const DiscordLoginWaiting()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -147,7 +58,6 @@ class _SignInPage extends State<SignUp> {
                       ),
                     ),
                   )),
-
               Padding(
                 padding: EdgeInsets.all(2.0),
                 child: Row(
@@ -167,7 +77,6 @@ class _SignInPage extends State<SignUp> {
                   ],
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(

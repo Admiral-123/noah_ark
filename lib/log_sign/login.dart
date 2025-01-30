@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:noah_ark/backend_handling_and_providers/supabase_handle.dart';
+import 'package:noah_ark/log_sign/discord_login_waiting.dart';
 import 'package:noah_ark/home.dart';
 import 'package:noah_ark/log_sign/sign_in.dart';
 import 'package:noah_ark/my_widgets/my_dialog.dart';
@@ -39,6 +40,11 @@ class _LoginPage extends State<Login> {
                   highlightColor: Colors.amber,
                   onTap: () async {
                     await context.read<SupabaseHandle>().loginWithDiscord();
+                    Navigator.pushReplacement(
+                        // ignore: use_build_context_synchronously
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const DiscordLoginWaiting()));
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -54,33 +60,6 @@ class _LoginPage extends State<Login> {
                     ),
                   ),
                 )),
-
-            // Padding(
-            //     padding: EdgeInsets.all(8.0),
-            //     child: ElevatedButton(
-            //       onPressed: () {
-            //         print("to be implemented");
-            //       },
-            //       // style: ElevatedButton.styleFrom(
-            //       //   backgroundColor: Theme.of(context).primaryColor,
-            //       //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            //       // ),
-            //       child: Text(
-            //         "Login with Phone Number",
-            //         style: TextStyle(
-            //             fontSize: 16, color: Theme.of(context).primaryColor),
-            //       ),
-            //     )),
-
-            // Padding(
-            //   padding: const EdgeInsets.only(
-            //     right: 325.0,
-            //   ),
-            //   child: Text(
-            //     "Email",
-            //     textAlign: TextAlign.left,
-            //   ),
-            // ),
 
             Padding(
               padding: EdgeInsets.all(2.0),

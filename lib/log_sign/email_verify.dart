@@ -58,6 +58,7 @@ class _EmailVerifyPage extends State<EmailVerify> {
 
                       // ignore: use_build_context_synchronously
                       Navigator.pushReplacement(
+                          // ignore: use_build_context_synchronously
                           context,
                           MaterialPageRoute(
                               builder: (context) => UserNamePfp()));

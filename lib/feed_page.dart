@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:noah_ark/backend_handling_and_providers/supabase_handle.dart';
+import 'package:noah_ark/my_widgets/my_dialog.dart';
+import 'package:noah_ark/my_widgets/my_txt_field.dart';
 import 'package:provider/provider.dart';
 
 class FeedPage extends StatefulWidget {
@@ -71,8 +73,8 @@ class _FeedPageState extends State<FeedPage> {
                           children: [
                             ListTile(
                               leading: SizedBox(
-                                height: 30,
-                                width: 30,
+                                height: 35,
+                                width: 35,
                                 child: Image.network(postUserPfp),
                               ),
                               title: FutureBuilder(
@@ -84,23 +86,14 @@ class _FeedPageState extends State<FeedPage> {
                                     if (snapshot.hasError) {
                                       return Center();
                                     }
-                                    final username = snapshot.data;
-                                    return Text(username!);
+                                    final username = snapshot.data!;
+                                    return Text(username.toString());
                                   }),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(postText),
                             ),
-                            ElevatedButton(
-                                onPressed: () async {
-                                  final x = await context
-                                      .read<SupabaseHandle>()
-                                      .postUserName(postUser);
-
-                                  print(x);
-                                },
-                                child: Text('data'))
                           ],
                         ),
                       ),
@@ -111,6 +104,48 @@ class _FeedPageState extends State<FeedPage> {
               itemCount: data.length,
             );
           }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          return showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  scrollable: true,
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        maxLines: 4,
+                        decoration: InputDecoration(
+                            hintText: "write what you feel",
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.grey),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 1,
+                                  color:
+                                      const Color.fromARGB(255, 107, 105, 105)),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12.0))),
+                      )
+                    ],
+                  ),
+                  actions: [
+                    IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.image,
+                          color: Theme.of(context).primaryColor,
+                        ))
+                  ],
+                );
+              });
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 }

@@ -50,8 +50,13 @@ class SupabaseHandle extends ChangeNotifier {
   }
 
   Future<dynamic> writeUserName(String username) async {
-    await Supabase.instance.client.auth
-        .updateUser(UserAttributes(data: {"display_name": username}));
+    try {
+      await Supabase.instance.client
+          .from('profile')
+          .insert({"uid": await currentUser(), "user_name": username});
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<dynamic> updatePfp(File? img, String path, String bucket) async {
@@ -63,8 +68,8 @@ class SupabaseHandle extends ChangeNotifier {
   }
 
   Future<dynamic> currentUser() async {
-    var y = Supabase.instance.client.auth.currentUser!.id.toString();
-    return y;
+    var currentuser = Supabase.instance.client.auth.currentUser!.id.toString();
+    return currentuser;
   }
 
   Future<dynamic> postTxt(String txt) async {
@@ -99,12 +104,12 @@ class SupabaseHandle extends ChangeNotifier {
   }
 
   Future<String> postUserName(String userId) async {
-    final userName = await Supabase.instance.client
-        .from('Users')
-        .select('display_name')
-        .eq('id', userId)
+    final x = await Supabase.instance.client
+        .from('profile')
+        .select('user_name')
+        .eq('uid', userId)
         .single();
 
-    return userName['display_name'];
+    return x['user_name'];
   }
 }
