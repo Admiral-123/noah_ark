@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:noah_ark/backend_handling_and_providers/supabase_handle.dart';
 import 'package:noah_ark/home.dart';
 import 'package:noah_ark/log_sign/login.dart';
+import 'package:noah_ark/log_sign/user_name_pfp.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -20,7 +21,9 @@ void main() async {
       //   child: const MyApp(),
       // )
       MultiProvider(
-    providers: [ChangeNotifierProvider(create: (context) => SupabaseHandle())],
+    providers: [
+      ChangeNotifierProvider(create: (context) => SupabaseHandle()),
+    ],
     child: const MyApp(),
   ));
 }
@@ -35,7 +38,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSwatch(
               backgroundColor: Color.fromARGB(255, 75, 174, 255))),
       color: const Color.fromARGB(255, 75, 174, 255),
-      home: SplashScr(),
+      home: Home(),
     );
   }
 }

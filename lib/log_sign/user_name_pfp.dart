@@ -96,19 +96,6 @@ class _UserNamePfpState extends State<UserNamePfp> {
                             ),
                           )),
                     )),
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: ElevatedButton(
-          //       onPressed: () {
-          //         try {
-          //           uploadImage();
-          //         } catch (e) {
-          //           ScaffoldMessenger.of(context)
-          //               .showSnackBar(SnackBar(content: Text(e.toString())));
-          //         }
-          //       },
-          //       child: Text("upload Image")),
-          // ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: MyTxtField(
