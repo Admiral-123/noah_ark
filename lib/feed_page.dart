@@ -47,8 +47,8 @@ class _FeedPageState extends State<FeedPage> {
               itemBuilder: (context, index) {
                 final doc = data[index];
                 final postText = doc["post_text"];
-                final postImagePath = doc["post_image"];
-                final postImageUrl =
+                final String? postImagePath = doc["post_image"];
+                final String? postImageUrl =
                     context.read<SupabaseHandle>().postImageUrl(postImagePath);
                 final postUser = doc["created_by"];
 
@@ -69,8 +69,8 @@ class _FeedPageState extends State<FeedPage> {
                                 begin: FractionalOffset.topRight,
                                 end: FractionalOffset.bottomLeft,
                                 colors: [
-                                  Color(0xff33ccff),
-                                  Color(0xff48BF91)
+                                  Color(0xffffd700),
+                                  Color(0xff98fb98)
                                 ])),
                         child: Column(
                           children: [
@@ -96,19 +96,41 @@ class _FeedPageState extends State<FeedPage> {
                                             fontWeight: FontWeight.w300));
                                   }),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 28, bottom: 10, top: 10),
-                              child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    postText,
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.black54),
-                                  )),
-                            ),
+                            postText != ''
+                                ? Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 28, bottom: 10, top: 10),
+                                    child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          postText,
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black54),
+                                        )))
+                                : SizedBox(
+                                    height: 1,
+                                  ),
+                            postImagePath != null
+                                ? Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Container(
+                                      // constraints: BoxConstraints(
+                                      //     maxHeight: 380, maxWidth: 400),
+                                      height: 380, width: 400,
+                                      decoration: BoxDecoration(
+                                          color: Colors.black26,
+                                          borderRadius:
+                                              BorderRadius.circular(3.0),
+                                          border: Border.all(
+                                              color: Colors.black87)),
+                                      child: Image.network(postImageUrl!),
+                                    ),
+                                  )
+                                : SizedBox(
+                                    height: 0,
+                                  )
                           ],
                         ),
                       ),

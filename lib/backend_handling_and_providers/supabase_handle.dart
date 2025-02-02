@@ -1,9 +1,6 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseHandle extends ChangeNotifier {
@@ -105,7 +102,10 @@ class SupabaseHandle extends ChangeNotifier {
     notifyListeners();
   }
 
-  String postImageUrl(String path) {
-    return Supabase.instance.client.storage.from('pfp').getPublicUrl(path);
+  String? postImageUrl(String? path) {
+    if (path == null) {
+      return null;
+    }
+    return Supabase.instance.client.storage.from('pfp').getPublicUrl(path!);
   }
 }
