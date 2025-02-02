@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:noah_ark/backend_handling_and_providers/supabase_handle.dart';
+import 'package:provider/provider.dart';
 
 class Post extends StatefulWidget {
   const Post({super.key});
@@ -11,6 +13,8 @@ class Post extends StatefulWidget {
 }
 
 class _PostPage extends State<Post> {
+  TextEditingController txtPost = TextEditingController();
+
   File? _img;
 
   Future<dynamic> pickImage() async {
@@ -28,6 +32,31 @@ class _PostPage extends State<Post> {
     setState(() {
       _img = null;
     });
+  }
+
+  Future<dynamic> postImage() async {
+    if (_img == null) {
+      return;
+    }
+
+    final userName = await context.read<SupabaseHandle>().currentUser();
+    final currentTime = DateTime.now().millisecondsSinceEpoch.toString();
+    final postTitle = txtPost.text.toString();
+
+    final imgFileName = userName + currentTime + postTitle;
+
+    final imagePath = 'pfpUpload/$imgFileName';
+
+    try {
+      // ignore: use_build_context_synchronously
+      context.read<SupabaseHandle>().postImage(_img!, imagePath);
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      return ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
+    }
+
+    //  context.read<SupabaseHandle>().postImage(image, path)
   }
 
   @override
