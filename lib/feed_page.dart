@@ -47,7 +47,11 @@ class _FeedPageState extends State<FeedPage> {
               itemBuilder: (context, index) {
                 final doc = data[index];
                 final postText = doc["post_text"];
+                final postImagePath = doc["post_image"];
+                final postImageUrl =
+                    context.read<SupabaseHandle>().postImageUrl(postImagePath);
                 final postUser = doc["created_by"];
+
                 final postUserPfp =
                     context.read<SupabaseHandle>().pfpUrlGiver(postUser);
 

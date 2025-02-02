@@ -59,19 +59,6 @@ class SupabaseHandle extends ChangeNotifier {
     return currentuser;
   }
 
-  Future<dynamic> postTxt(String txt) async {
-    await Supabase.instance.client.from('post').insert({
-      // "created_at": DateTime.now(),
-      "created_by": await currentUser(),
-      "post_text": txt,
-      "post_image": null,
-      "post_upvotes": [],
-      "post_downvotes": [],
-      // "post_comments": [],
-    });
-    notifyListeners();
-  }
-
   Future<dynamic> postComments(String txt, String postId) async {
     await Supabase.instance.client.from('post_comments').insert({
       "post_id": postId,
@@ -105,5 +92,20 @@ class SupabaseHandle extends ChangeNotifier {
   String postImage(File image, String path) {
     Supabase.instance.client.storage.from('pfp').upload(path, image);
     return path;
+  }
+
+  Future<dynamic> post(String? text, String? imagePath) async {
+    await Supabase.instance.client.from('post').insert({
+      "created_by": await currentUser(),
+      "post_text": text,
+      "post_image": imagePath,
+      "post_upvotes": [],
+      "post_downvotes": []
+    });
+    notifyListeners();
+  }
+
+  String postImageUrl(String path) {
+    return Supabase.instance.client.storage.from('pfp').getPublicUrl(path);
   }
 }

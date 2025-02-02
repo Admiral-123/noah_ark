@@ -43,13 +43,16 @@ class _PostPage extends State<Post> {
     final currentTime = DateTime.now().millisecondsSinceEpoch.toString();
     final postTitle = txtPost.text.toString();
 
-    final imgFileName = userName + currentTime + postTitle;
+    final imgFileName = userName + postTitle + currentTime;
 
-    final imagePath = 'pfpUpload/$imgFileName';
+    final imagePath = 'images/$imgFileName';
 
     try {
       // ignore: use_build_context_synchronously
-      context.read<SupabaseHandle>().postImage(_img!, imagePath);
+      final imageName =
+          // ignore: use_build_context_synchronously
+          context.read<SupabaseHandle>().postImage(_img!, imagePath);
+      return imageName;
     } catch (e) {
       // ignore: use_build_context_synchronously
       return ScaffoldMessenger.of(context)
@@ -67,6 +70,7 @@ class _PostPage extends State<Post> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
+            controller: txtPost,
             maxLines: 4,
             decoration: InputDecoration(
                 hintText: "write what you feel",
@@ -129,6 +133,7 @@ class _PostPage extends State<Post> {
       ),
       actions: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
                 onPressed: () {
@@ -137,7 +142,30 @@ class _PostPage extends State<Post> {
                 icon: Icon(
                   Icons.cancel,
                   color: Theme.of(context).primaryColor,
-                ))
+                )),
+            ElevatedButton(
+                onPressed: () async {
+                  if (txtPost.toString() == '' && _img == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Cant post empty stuff')));
+                  }
+
+                  if (_img != null) {
+                    final path = await postImage();
+                    print(path);
+                    context
+                        .read<SupabaseHandle>()
+                        .post(txtPost.text.trim(), path);
+                  }
+
+                  if (_img == null) {
+                    // ignore: use_build_context_synchronously
+                    context
+                        .read<SupabaseHandle>()
+                        .post(txtPost.text.trim(), null);
+                  }
+                },
+                child: Text('post'))
           ],
         )
       ],
