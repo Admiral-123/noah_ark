@@ -16,8 +16,6 @@ class UserNamePfp extends StatefulWidget {
 class _UserNamePfpState extends State<UserNamePfp> {
   final TextEditingController userNameController = TextEditingController();
   File? _pfPImage;
-  // File defImage = =
-  // final defImage = Icon(Icons.person);
 
   Future<dynamic> pickImage() async {
     final ImagePicker picker = ImagePicker();
@@ -29,11 +27,6 @@ class _UserNamePfpState extends State<UserNamePfp> {
         _pfPImage = File(image.path);
       });
     }
-    // else{
-    //   setState(() {
-    //     _pfPImage = ;
-    //   });
-    // }
   }
 
   Future<dynamic> uploadImage() async {

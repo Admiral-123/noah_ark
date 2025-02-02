@@ -7,23 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseHandle extends ChangeNotifier {
-  // Future<dynamic> createUserWithPhone(String num, String password) async { // depreciated
-  //   try {
-  //     await Supabase.instance.client.auth
-  //         .signUp(phone: num, password: password);
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //   notifyListeners();
-  // }
-
-  // Future<void> verifyPhone(String otp, String num) async {
-  //   await Supabase.instance.client.auth
-  //       .verifyOTP(type: OtpType.signup, token: otp, phone: num);
-
-  //   notifyListeners();
-  // }
-
   Future<dynamic> createUseWithEmail(String email, String password) async {
     await Supabase.instance.client.auth
         .signUp(email: email, password: password);
@@ -47,6 +30,8 @@ class SupabaseHandle extends ChangeNotifier {
         authScreenLaunchMode: kIsWeb
             ? LaunchMode.platformDefault
             : LaunchMode.externalApplication);
+
+    notifyListeners();
   }
 
   Future<dynamic> writeUserName(String username) async {
@@ -57,6 +42,7 @@ class SupabaseHandle extends ChangeNotifier {
     } catch (e) {
       print(e);
     }
+    notifyListeners();
   }
 
   Future<dynamic> updatePfp(File? img, String path, String bucket) async {
@@ -65,6 +51,7 @@ class SupabaseHandle extends ChangeNotifier {
     } catch (e) {
       print(e.toString());
     }
+    notifyListeners();
   }
 
   Future<dynamic> currentUser() async {
@@ -82,6 +69,7 @@ class SupabaseHandle extends ChangeNotifier {
       "post_downvotes": [],
       // "post_comments": [],
     });
+    notifyListeners();
   }
 
   Future<dynamic> postComments(String txt, String postId) async {
@@ -91,6 +79,7 @@ class SupabaseHandle extends ChangeNotifier {
       "comments": txt,
       "likes": []
     });
+    notifyListeners();
   }
 
   SupabaseStreamFilterBuilder postStream() {
@@ -111,5 +100,10 @@ class SupabaseHandle extends ChangeNotifier {
         .single();
 
     return x['user_name'];
+  }
+
+  String postImage(File image, String path) {
+    Supabase.instance.client.storage.from('pfp').upload(path, image);
+    return path;
   }
 }

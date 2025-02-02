@@ -1,10 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:noah_ark/backend_handling_and_providers/supabase_handle.dart';
-import 'package:noah_ark/my_widgets/my_dialog.dart';
-import 'package:noah_ark/my_widgets/my_txt_field.dart';
+import 'package:noah_ark/post.dart';
 import 'package:provider/provider.dart';
 
 class FeedPage extends StatefulWidget {
@@ -15,22 +11,6 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
-  // String getUser(String x) await {
-  //   return context.read<SupabaseHandle>().postUserName(x);
-  // }
-  File? _img;
-
-  Future<dynamic> pickImage(StateSetter updateState) async {
-    final ImagePicker picker = ImagePicker();
-
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    if (_img != null) {
-      setState(() {
-        _img = File(image!.path);
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,55 +119,8 @@ class _FeedPageState extends State<FeedPage> {
         onPressed: () async {
           return showDialog(
               context: context,
-              builder: (BuildContext context) {
-                return StatefulBuilder(
-                  builder: (context, setState) => AlertDialog(
-                    scrollable: true,
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextField(
-                          maxLines: 4,
-                          decoration: InputDecoration(
-                              hintText: "write what you feel",
-                              hintStyle: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.grey),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 1,
-                                    color: const Color.fromARGB(
-                                        255, 107, 105, 105)),
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12.0))),
-                        ),
-                        Container(
-                            // height: 100,
-                            // decoration: BoxDecoration(
-                            //     borderRadius: BorderRadius.circular(10.0),
-                            //     border: Border.all(color: Colors.black)),
-                            child: _img != null
-                                ? (Image.file(_img!))
-                                : Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text("click on image icon below"),
-                                  ))
-                      ],
-                    ),
-                    actions: [
-                      IconButton(
-                          onPressed: () async {
-                            await pickImage(setState);
-                          },
-                          icon: Icon(
-                            Icons.image,
-                            color: Theme.of(context).primaryColor,
-                          ))
-                    ],
-                  ),
-                );
+              builder: (context) {
+                return Post();
               });
         },
         child: Icon(Icons.add),
