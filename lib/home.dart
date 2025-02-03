@@ -13,7 +13,9 @@ class _HomePage extends State<Home> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    const FeedPage(),
+    const FeedPage(
+        // key: PageStorageKey('FeedPage'),
+        ),
     const MyAccount(),
   ];
 

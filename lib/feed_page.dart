@@ -10,14 +10,23 @@ class FeedPage extends StatefulWidget {
   State<FeedPage> createState() => _FeedPageState();
 }
 
-class _FeedPageState extends State<FeedPage> {
+class _FeedPageState extends State<FeedPage>
+    with AutomaticKeepAliveClientMixin {
+  final currentPageState = PageStorageBucket();
+
+  @override
+  bool get wantKeepAlive =>
+      true; // Whether the current instance should be kept alive.
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("NoahArk"),
       ),
       body: StreamBuilder(
+          key: PageStorageKey('feedState'),
           stream: context.read<SupabaseHandle>().postStream(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
