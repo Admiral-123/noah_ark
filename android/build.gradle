@@ -1,3 +1,17 @@
+buildscript {
+    ext.kotlin_version = "1.9.0" // Define the Kotlin version
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:8.1.0"  // Update to latest AGP version
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"  // Use the Kotlin version
+    }
+}
+
 allprojects {
     repositories {
         google()
@@ -6,9 +20,11 @@ allprojects {
 }
 
 rootProject.buildDir = "../build"
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
 subprojects {
     project.evaluationDependsOn(":app")
 }

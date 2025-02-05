@@ -56,7 +56,7 @@ class _FeedPageState extends State<FeedPage>
               itemBuilder: (context, index) {
                 final doc = data[index];
                 final postText = doc["post_text"];
-                final postId = doc["id"];
+                //final postId = doc["id"];
                 final String? postImagePath = doc["post_image"];
                 final String? postImageUrl =
                     context.read<SupabaseHandle>().postImageUrl(postImagePath);
@@ -164,29 +164,16 @@ class _FeedPageState extends State<FeedPage>
                             //         return Container(
                             //           color: Colors.grey,
                             //         );
-                            //       }
-
-                            //       if (snapshot.data == true) {
+                            //       } else if (snapshot.data == true) {
                             //         return Container(
                             //           color: Colors.green,
                             //         );
-                            //       }
-                            //       if (snapshot.data == false) {
+                            //       } else {
                             //         return Container(
-                            //           color: Colors.grey,
+                            //           color: Colors.amber,
                             //         );
                             //       }
-                            //       return Text(
-                            //           child: doc["post_upvotes"] as List);
                             //     })
-
-                            // ElevatedButton(
-                            //     onPressed: () async {
-                            //       context
-                            //           .read<SupabaseHandle>()
-                            //           .isPostLiked(postId);
-                            //     },
-                            //     child: Text('data'))
                           ],
                         ),
                       ),

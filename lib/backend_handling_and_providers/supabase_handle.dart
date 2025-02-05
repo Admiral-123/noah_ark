@@ -4,6 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseHandle extends ChangeNotifier {
+  Stream<AuthState> onAuthState() {
+    return Supabase.instance.client.auth.onAuthStateChange;
+  }
+
   Future<dynamic> createUseWithEmail(String email, String password) async {
     await Supabase.instance.client.auth
         .signUp(email: email, password: password);
@@ -109,20 +113,20 @@ class SupabaseHandle extends ChangeNotifier {
     return Supabase.instance.client.storage.from('pfp').getPublicUrl(path);
   }
 
-  dynamic isPostLiked(String postId) async {
-    final response = await Supabase.instance.client
-        .from('post')
-        .select('post_upvotes')
-        .eq('id', postId)
-        .single();
+  // dynamic isPostLiked(String postId) async {
+  //   final response = await Supabase.instance.client
+  //       .from('post')
+  //       .select('post_upvotes')
+  //       .eq('id', postId)
+  //       .single();
 
-    if (response.isEmpty) {
-      return false;
-    }
+  //   if (response.isEmpty) {
+  //     return false;
+  //   }
 
-    final postUpvotes = List<String>.from(response['post_upvotes'] ?? []);
-    final currentuser = await currentUser();
+  //   final postUpvotes = List<String>.from(response['post_upvotes']);
+  //   final currentuser = await currentUser();
 
-    return postUpvotes.contains(currentuser);
-  }
+  //   return postUpvotes.contains(currentuser);
+  // }
 }
