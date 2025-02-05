@@ -56,6 +56,7 @@ class _FeedPageState extends State<FeedPage>
               itemBuilder: (context, index) {
                 final doc = data[index];
                 final postText = doc["post_text"];
+                final postId = doc["id"];
                 final String? postImagePath = doc["post_image"];
                 final String? postImageUrl =
                     context.read<SupabaseHandle>().postImageUrl(postImagePath);
@@ -134,12 +135,58 @@ class _FeedPageState extends State<FeedPage>
                                               BorderRadius.circular(3.0),
                                           border: Border.all(
                                               color: Colors.black87)),
-                                      child: Image.network(postImageUrl!),
+                                      child: Image.network(
+                                        postImageUrl!,
+                                        loadingBuilder: // child is the file,
+                                            (context, child, loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            // if loadingProgress is completed(which means it doesnt exist now then return child)
+                                            return child;
+                                          }
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        },
+                                      ),
                                     ),
                                   )
                                 : SizedBox(
                                     height: 0,
-                                  )
+                                  ),
+                            // FutureBuilder(
+                            //     future: context
+                            //         .read<SupabaseHandle>()
+                            //         .isPostLiked(postId),
+                            //     builder: (context, snapshot) {
+                            //       // final x = snapshot.data;
+
+                            //       if (snapshot.data == null) {
+                            //         return Container(
+                            //           color: Colors.grey,
+                            //         );
+                            //       }
+
+                            //       if (snapshot.data == true) {
+                            //         return Container(
+                            //           color: Colors.green,
+                            //         );
+                            //       }
+                            //       if (snapshot.data == false) {
+                            //         return Container(
+                            //           color: Colors.grey,
+                            //         );
+                            //       }
+                            //       return Text(
+                            //           child: doc["post_upvotes"] as List);
+                            //     })
+
+                            // ElevatedButton(
+                            //     onPressed: () async {
+                            //       context
+                            //           .read<SupabaseHandle>()
+                            //           .isPostLiked(postId);
+                            //     },
+                            //     child: Text('data'))
                           ],
                         ),
                       ),

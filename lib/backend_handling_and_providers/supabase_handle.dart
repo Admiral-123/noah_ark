@@ -106,6 +106,23 @@ class SupabaseHandle extends ChangeNotifier {
     if (path == null) {
       return null;
     }
-    return Supabase.instance.client.storage.from('pfp').getPublicUrl(path!);
+    return Supabase.instance.client.storage.from('pfp').getPublicUrl(path);
+  }
+
+  dynamic isPostLiked(String postId) async {
+    final response = await Supabase.instance.client
+        .from('post')
+        .select('post_upvotes')
+        .eq('id', postId)
+        .single();
+
+    if (response.isEmpty) {
+      return false;
+    }
+
+    final postUpvotes = List<String>.from(response['post_upvotes'] ?? []);
+    final currentuser = await currentUser();
+
+    return postUpvotes.contains(currentuser);
   }
 }
