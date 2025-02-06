@@ -70,8 +70,10 @@ class SupabaseHandle extends ChangeNotifier {
     notifyListeners();
   }
 
-  SupabaseStreamFilterBuilder postStream() {
-    return Supabase.instance.client.from('post').stream(primaryKey: ['id']);
+  SupabaseStreamBuilder postStream() {
+    return Supabase.instance.client
+        .from('post')
+        .stream(primaryKey: ['id']).order('created_at', ascending: false);
   }
 
   String pfpUrlGiver(String userId) {
@@ -113,20 +115,37 @@ class SupabaseHandle extends ChangeNotifier {
     return Supabase.instance.client.storage.from('pfp').getPublicUrl(path);
   }
 
-  // dynamic isPostLiked(String postId) async {
-  //   final response = await Supabase.instance.client
-  //       .from('post')
-  //       .select('post_upvotes')
-  //       .eq('id', postId)
-  //       .single();
+  Future<bool> isPostLiked(String postId) async {
+    final response = await Supabase.instance.client
+        .from('post')
+        .select('post_upvotes')
+        .eq('id', postId)
+        .single();
 
-  //   if (response.isEmpty) {
-  //     return false;
-  //   }
+    if (response.isEmpty) {
+      return false;
+    }
 
-  //   final postUpvotes = List<String>.from(response['post_upvotes']);
-  //   final currentuser = await currentUser();
+    final postUpvotes = List<String>.from(response['post_upvotes'] as List);
+    final currentuser = await currentUser();
 
-  //   return postUpvotes.contains(currentuser);
-  // }
+    return postUpvotes.contains(currentuser);
+  }
+
+  Future<bool> isPostDisliked(String postId) async {
+    final response = await Supabase.instance.client
+        .from('post')
+        .select('post_downvotes')
+        .eq('id', postId)
+        .single();
+
+    if (response.isEmpty) {
+      return false;
+    }
+
+    final postDownvotes = List<String>.from(response['post_downvotes'] as List);
+    final currentuser = await currentUser();
+
+    return postDownvotes.contains(currentuser);
+  }
 }

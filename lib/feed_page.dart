@@ -56,7 +56,7 @@ class _FeedPageState extends State<FeedPage>
               itemBuilder: (context, index) {
                 final doc = data[index];
                 final postText = doc["post_text"];
-                //final postId = doc["id"];
+                final postId = doc["id"];
                 final String? postImagePath = doc["post_image"];
                 final String? postImageUrl =
                     context.read<SupabaseHandle>().postImageUrl(postImagePath);
@@ -153,27 +153,84 @@ class _FeedPageState extends State<FeedPage>
                                 : SizedBox(
                                     height: 0,
                                   ),
-                            // FutureBuilder(
-                            //     future: context
-                            //         .read<SupabaseHandle>()
-                            //         .isPostLiked(postId),
-                            //     builder: (context, snapshot) {
-                            //       // final x = snapshot.data;
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  SizedBox(
+                                    width: 100,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        FutureBuilder(
+                                            future: context
+                                                .read<SupabaseHandle>()
+                                                .isPostLiked(postId),
+                                            builder: (context, snapshot) {
+                                              // final x = snapshot.data;
 
-                            //       if (snapshot.data == null) {
-                            //         return Container(
-                            //           color: Colors.grey,
-                            //         );
-                            //       } else if (snapshot.data == true) {
-                            //         return Container(
-                            //           color: Colors.green,
-                            //         );
-                            //       } else {
-                            //         return Container(
-                            //           color: Colors.amber,
-                            //         );
-                            //       }
-                            //     })
+                                              Color col;
+
+                                              // Icon(Icons.arrow_downward, color: col,);
+
+                                              if (snapshot.data == null) {
+                                                col = Colors.grey;
+                                              } else if (snapshot.data! ==
+                                                  true) {
+                                                col = Colors.green;
+                                              } else {
+                                                col = Colors.grey;
+                                              }
+
+                                              return IconButton(
+                                                onPressed: () {},
+                                                icon: Icon(
+                                                  Icons.arrow_upward,
+                                                  color: col,
+                                                ),
+                                              );
+                                            }),
+                                        FutureBuilder(
+                                            future: context
+                                                .read<SupabaseHandle>()
+                                                .isPostDisliked(postId),
+                                            builder: (context, snapshot) {
+                                              // final x = snapshot.data;
+
+                                              Color col;
+
+                                              // Icon(Icons.arrow_downward, color: col,);
+
+                                              if (snapshot.data == null) {
+                                                col = Colors.grey;
+                                              } else if (snapshot.data! ==
+                                                  true) {
+                                                col = Colors.red;
+                                              } else {
+                                                col = Colors.grey;
+                                              }
+
+                                              return IconButton(
+                                                onPressed: () {},
+                                                icon: Icon(
+                                                  Icons.arrow_downward,
+                                                  color: col,
+                                                ),
+                                              );
+                                            }),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 5),
+                                    child: Icon(Icons.comment),
+                                  )
+                                ],
+                              ),
+                            )
                           ],
                         ),
                       ),
