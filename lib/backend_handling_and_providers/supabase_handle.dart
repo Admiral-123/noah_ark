@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 
@@ -117,32 +118,13 @@ class SupabaseHandle extends ChangeNotifier {
   }
 
   Future<bool> isPostLiked(String postId) async {
-    final response = await Supabase.instance.client
-        .from('post')
-        .select('post_upvotes')
-        .eq('id', postId)
-        .single();
-
+    final response = await postUpvoteList(postId);
     if (response.isEmpty) {
       return false;
     }
-
-    final postUpvotes = List<String>.from(response['post_upvotes'] as List);
     final currentuser = await currentUser();
 
-    return postUpvotes.contains(currentuser);
-  }
-
-  Future<List<String>> postUpvoteList(String postId) async {
-    final response = await Supabase.instance.client
-        .from('post')
-        .select('post_upvotes')
-        .eq('id', postId)
-        .single();
-
-    final postDownvotes = List<String>.from(response['post_downvotes'] ?? []);
-
-    return postDownvotes;
+    return response.contains(currentuser);
   }
 
   Future<bool> isPostDisliked(String postId) async {
@@ -162,20 +144,80 @@ class SupabaseHandle extends ChangeNotifier {
     return postDownvotes.contains(currentuser);
   }
 
-  Future<void> upvotePost(String postId) async {
-    final lis = await postUpvoteList(postId);
-    print(lis);
-    final currentuser = await currentUser();
-    lis.add(currentuser);
-
-    print(lis);
-
-    Supabase.instance.client
+  Future<List<String>> postUpvoteList(String postId) async {
+    final response = await Supabase.instance.client
         .from('post')
-        .update({"post_upvotes": "$lis"})
+        .select('post_upvotes')
         .eq('id', postId)
         .single();
 
+    final postUpvotes = List<String>.from(response['post_upvotes'] ?? []);
+
+    return postUpvotes;
+  }
+
+  Future<List<String>> postDownvoteList(String postId) async {
+    final response = await Supabase.instance.client
+        .from('post')
+        .select('post_downvotes')
+        .eq('id', postId)
+        .single();
+
+    final postDownvotes = List<String>.from(response['post_downvotes'] ?? []);
+
+    return postDownvotes;
+  }
+
+  Future<void> upvotePost(String postId) async {
+    final lis = await postUpvoteList(postId);
+
+    final currentuser = await currentUser();
+    if (lis.contains(currentuser)) {
+      lis.remove(currentuser);
+    } else {
+      lis.add(currentuser);
+    }
+
+    try {
+      await Supabase.instance.client
+          .from('post')
+          .update({"post_upvotes": lis})
+          .eq('id', postId)
+          .single();
+    } catch (e) {
+      print(e.toString());
+    }
+
     notifyListeners();
+  }
+
+  Future<void> downvotePost(String postId) async {
+    final lis = await postDownvoteList(postId);
+
+    final currentuser = await currentUser();
+    if (lis.contains(currentuser)) {
+      lis.remove(currentuser);
+    } else {
+      lis.add(currentuser);
+    }
+
+    try {
+      await Supabase.instance.client
+          .from('post')
+          .update({"post_downvotes": lis})
+          .eq('id', postId)
+          .single();
+    } catch (e) {
+      print(e.toString());
+    }
+
+    notifyListeners();
+  }
+
+  Future<int> totalCount(String postId) async {
+    final like = await postUpvoteList(postId);
+    final dislike = await postDownvoteList(postId);
+
+    return like.length - dislike.length;
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:noah_ark/backend_handling_and_providers/supabase_handle.dart';
 import 'package:noah_ark/post.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key});
@@ -67,6 +68,11 @@ class _FeedPageState extends State<FeedPage>
 
                 final userName =
                     context.read<SupabaseHandle>().postUserName(postUser);
+
+                // List<Future> futureOfLikeDislike = [
+                //   context.read<SupabaseHandle>().postUpvoteList(postId),
+                //   context.read<SupabaseHandle>().postDownvoteList(postId)
+                // ];
 
                 return Column(
                   children: [
@@ -157,6 +163,8 @@ class _FeedPageState extends State<FeedPage>
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
+                                // mainAxisAlignment:
+                                //     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   SizedBox(
                                     width: 100,
@@ -170,11 +178,7 @@ class _FeedPageState extends State<FeedPage>
                                                 .read<SupabaseHandle>()
                                                 .isPostLiked(postId),
                                             builder: (context, snapshot) {
-                                              // final x = snapshot.data;
-
                                               Color col;
-
-                                              // Icon(Icons.arrow_downward, color: col,);
 
                                               if (snapshot.data == null) {
                                                 col = Colors.grey;
@@ -186,7 +190,11 @@ class _FeedPageState extends State<FeedPage>
                                               }
 
                                               return IconButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  context
+                                                      .read<SupabaseHandle>()
+                                                      .upvotePost(postId);
+                                                },
                                                 icon: Icon(
                                                   Icons.arrow_upward,
                                                   color: col,
@@ -196,44 +204,50 @@ class _FeedPageState extends State<FeedPage>
                                         FutureBuilder(
                                             future: context
                                                 .read<SupabaseHandle>()
-                                                .isPostDisliked(postId),
+                                                .totalCount(postId),
                                             builder: (context, snapshot) {
-                                              // final x = snapshot.data;
-
-                                              Color col;
-
-                                              // Icon(Icons.arrow_downward, color: col,);
-
-                                              if (snapshot.data == null) {
-                                                col = Colors.grey;
-                                              } else if (snapshot.data! ==
-                                                  true) {
-                                                col = Colors.red;
-                                              } else {
-                                                col = Colors.grey;
-                                              }
-
-                                              return IconButton(
-                                                onPressed: () {},
-                                                icon: Icon(
-                                                  Icons.arrow_downward,
-                                                  color: col,
-                                                ),
-                                              );
+                                              var count = snapshot.data ?? 0;
+                                              return Text(count.toString());
                                             }),
+                                        Expanded(
+                                          child: FutureBuilder(
+                                              future: context
+                                                  .read<SupabaseHandle>()
+                                                  .isPostDisliked(postId),
+                                              builder: (context, snapshot) {
+                                                Color col;
+
+                                                if (snapshot.data == null) {
+                                                  col = Colors.grey;
+                                                } else if (snapshot.data! ==
+                                                    true) {
+                                                  col = Colors.red;
+                                                } else {
+                                                  col = Colors.grey;
+                                                }
+
+                                                return IconButton(
+                                                  onPressed: () {
+                                                    context
+                                                        .read<SupabaseHandle>()
+                                                        .downvotePost(postId);
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.arrow_downward,
+                                                    color: col,
+                                                  ),
+                                                );
+                                              }),
+                                        ),
                                       ],
                                     ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 5),
                                     child: IconButton(
-                                        onPressed: () {
-                                          context
-                                              .read<SupabaseHandle>()
-                                              .upvotePost(postId);
-                                        },
+                                        onPressed: () {},
                                         icon: Icon(Icons.comment)),
-                                  )
+                                  ),
                                 ],
                               ),
                             )
