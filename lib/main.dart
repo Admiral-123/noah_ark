@@ -14,12 +14,7 @@ void main() async {
   Supabase.initialize(
       anonKey: dotenv.get('anon_key'), url: dotenv.get('project_url'));
 
-  runApp(
-      //   MultiProvider(
-      //   providers: [],
-      //   child: const MyApp(),
-      // )
-      MultiProvider(
+  runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => SupabaseHandle()),
     ],
@@ -54,9 +49,6 @@ class _SplashScrState extends State<SplashScr> {
   initState() {
     super.initState();
     switchScr();
-    // Future.delayed(Duration(seconds: 2), () {
-    //   return AuthGet();
-    // });
   }
 
   @override
