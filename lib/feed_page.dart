@@ -226,7 +226,13 @@ class _FeedPageState extends State<FeedPage>
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 5),
-                                    child: Icon(Icons.comment),
+                                    child: IconButton(
+                                        onPressed: () {
+                                          context
+                                              .read<SupabaseHandle>()
+                                              .upvotePost(postId);
+                                        },
+                                        icon: Icon(Icons.comment)),
                                   )
                                 ],
                               ),

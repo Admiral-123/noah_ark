@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -132,6 +133,18 @@ class SupabaseHandle extends ChangeNotifier {
     return postUpvotes.contains(currentuser);
   }
 
+  Future<List<String>> postUpvoteList(String postId) async {
+    final response = await Supabase.instance.client
+        .from('post')
+        .select('post_upvotes')
+        .eq('id', postId)
+        .single();
+
+    final postDownvotes = List<String>.from(response['post_downvotes'] ?? []);
+
+    return postDownvotes;
+  }
+
   Future<bool> isPostDisliked(String postId) async {
     final response = await Supabase.instance.client
         .from('post')
@@ -147,5 +160,22 @@ class SupabaseHandle extends ChangeNotifier {
     final currentuser = await currentUser();
 
     return postDownvotes.contains(currentuser);
+  }
+
+  Future<void> upvotePost(String postId) async {
+    final lis = await postUpvoteList(postId);
+    print(lis);
+    final currentuser = await currentUser();
+    lis.add(currentuser);
+
+    print(lis);
+
+    Supabase.instance.client
+        .from('post')
+        .update({"post_upvotes": "$lis"})
+        .eq('id', postId)
+        .single();
+
+    notifyListeners();
   }
 }
