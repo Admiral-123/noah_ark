@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:noah_ark/backend_handling_and_providers/supabase_handle.dart';
+import 'package:noah_ark/backend_handling_and_providers/theme_provider.dart';
 import 'package:noah_ark/home.dart';
 import 'package:noah_ark/log_sign/login.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => SupabaseHandle()),
+      ChangeNotifierProvider(create: (context) => ThemeProvider())
     ],
     child: const MyApp(),
   ));
@@ -28,6 +30,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      darkTheme:
+          context.watch<ThemeProvider>().isDark ? ThemeData.dark() : null,
       theme: ThemeData.from(
           colorScheme: ColorScheme.fromSwatch(
               backgroundColor: Color.fromARGB(255, 75, 174, 255))),
