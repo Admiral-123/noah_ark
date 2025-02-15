@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:noah_ark/backend_handling_and_providers/supabase_handle.dart';
+import 'package:noah_ark/backend_handling_and_providers/theme_provider.dart';
 import 'package:noah_ark/post.dart';
 import 'package:provider/provider.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key});
@@ -21,6 +21,7 @@ class _FeedPageState extends State<FeedPage>
 
   @override
   Widget build(BuildContext context) {
+    var isDarkMode = context.read<ThemeProvider>().isDark;
     super.build(context);
     return Scaffold(
       appBar: AppBar(
@@ -69,11 +70,6 @@ class _FeedPageState extends State<FeedPage>
                 final userName =
                     context.read<SupabaseHandle>().postUserName(postUser);
 
-                // List<Future> futureOfLikeDislike = [
-                //   context.read<SupabaseHandle>().postUpvoteList(postId),
-                //   context.read<SupabaseHandle>().postDownvoteList(postId)
-                // ];
-
                 return Column(
                   children: [
                     Padding(
@@ -109,6 +105,7 @@ class _FeedPageState extends State<FeedPage>
 
                                     return Text("a/$username",
                                         style: TextStyle(
+                                            color: Colors.black,
                                             fontWeight: FontWeight.w300));
                                   }),
                             ),
@@ -207,7 +204,11 @@ class _FeedPageState extends State<FeedPage>
                                                 .totalCount(postId),
                                             builder: (context, snapshot) {
                                               var count = snapshot.data ?? 0;
-                                              return Text(count.toString());
+                                              return Text(
+                                                count.toString(),
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              );
                                             }),
                                         Expanded(
                                           child: FutureBuilder(
@@ -271,6 +272,41 @@ class _FeedPageState extends State<FeedPage>
         },
         child: Icon(Icons.add),
       ),
+      endDrawer: Drawer(
+          width: 270,
+          child: ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Text("Dark Mode", style: TextStyle(fontSize: 18)),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              context.read<ThemeProvider>().darkThemeToggle();
+                            });
+                          },
+                          child: Container(
+                            height: 20,
+                            width: 20,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.0),
+                                color: isDarkMode
+                                    ? Colors.green
+                                    : const Color.fromARGB(255, 221, 218, 218)),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          )),
     );
   }
 }
