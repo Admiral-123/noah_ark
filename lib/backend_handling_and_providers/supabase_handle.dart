@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -16,17 +14,12 @@ class SupabaseHandle extends ChangeNotifier {
 
     notifyListeners();
   }
-  // new page, verify email then click on a button to proceed to home page
 
   Future<dynamic> loginWithEmail(String email, String password) async {
     await Supabase.instance.client.auth
         .signInWithPassword(email: email, password: password);
     notifyListeners();
   }
-
-  // Future<dynamic> signUpWithDiscord() async {
-  //   await Supabase.instance.client.auth.signUp();
-  // }
 
   Future<dynamic> loginWithDiscord() async {
     await Supabase.instance.client.auth.signInWithOAuth(OAuthProvider.discord,
@@ -76,6 +69,15 @@ class SupabaseHandle extends ChangeNotifier {
     return Supabase.instance.client
         .from('post')
         .stream(primaryKey: ['id']).order('created_at', ascending: false);
+  }
+
+  Future<SupabaseStreamBuilder> postStreamCurrentUser() async {
+    final currentuser = await currentUser();
+    return Supabase.instance.client
+        .from('post')
+        .stream(primaryKey: ['id'])
+        .eq('created_by', currentuser)
+        .order('created_at', ascending: false);
   }
 
   String pfpUrlGiver(String userId) {
